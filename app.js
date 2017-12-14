@@ -12,6 +12,9 @@ const io = socketIo(server)
 
 const locationMap = new Map()
 
+// Set the server port
+var port = process.env.PORT || 8080;
+
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.get('/', (req, res) => {
@@ -32,11 +35,11 @@ io.on('connection', socket => {
 	})
 })
 
-server.listen(3000, err => {
+server.listen(port, err => {
 	if (err) {
 		throw err
 	}
-	console.log('server started on port 3000')
+	console.log('server started on port ' + port)
 })
 
 // const config = {
