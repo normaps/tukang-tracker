@@ -43,7 +43,7 @@
                             <a class="page-scroll" href="#about">Tentang TukTrack</a>
                         </li>
                         <li>
-                            <a class="page-scroll" href="">Daftar Sebagai Merchant</a>
+                            <a data-toggle="modal" data-target="#myModal">Daftar Sebagai Merchant</a>
                         </li>
                         <li>
                             <a class="page-scroll" href="">Coba TukTrack</a>
@@ -56,11 +56,33 @@
         </nav>
     </div>
 
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close text-blue" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title text-right">DAFTAR SEBAGAI MERCHANT</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Some text in the modal.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default">Daftar Sekarang!</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
     <header>
         <div class="header-content" style="height:100vh">
             <div class="header-content-inner" style="margin-top:20vh;">
-                <p id="homeHeading">Temukan gerobakan keliling yang kamu butuhkan dalam sekejap!
-                    </br><a href="" class="btn btn-primary btn-xl button-white">COBA SEKARANG</a>
+                <p class="text-bold" id="homeHeading">Temukan gerobakan keliling yang kamu butuhkan dalam sekejap!</p>
+                <p>
+                    <a href="" class="btn btn-primary btn-xl text-bold button-white">COBA SEKARANG</a>
                 </p>
             </div>
         </div>
@@ -72,7 +94,7 @@
     <section class="bg-primary">
         <div class="container">
             <div class="row" style="display:inline">
-                <div class="col-lg-12 text-center">
+                <div class="col-lg-12 text-left">
                     <div class="spacing"></div>
                     <p class="text-bold text-red">
                         Jam 12 malam, ngidam nasi goreng tektek. Kok gerobaknya gak lewat-lewat?</br>
