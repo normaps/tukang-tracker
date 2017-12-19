@@ -1,11 +1,108 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>Tracker</title>
-	</head>
-	<body>
-		<script src="/socket.io/socket.io.js"></script>
-		<script src="/js/tracker.js"></script>
-	</body>
+
+<head>
+    <meta charset="utf-8">
+    <title>Tukang Tracker - Tracker</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Theme CSS -->
+    <link href="/css/idx.css" rel="stylesheet">
+</head>
+
+<body>
+    <div style="display:inline">
+        <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header" style="margin-top:-20px">
+                    <div>
+                        <div class="b-padding-10"></div>
+                        <div class="b-padding-10"></div>
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>menu
+                    </button>
+                    </div>
+                    <a class="navbar-brand" href="/" style="margin-bottom:5px"><img src="img/LOGOWHITE.png" style="margin-top:-10px;width:80px;"></a>
+                    <div class="b-padding-10"></div>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="margin-top:5px">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a class="page-scroll" href="">Halo, LALALA!</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="">Logut</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+    </div>
+
+    <section class="bg-primary">
+        <div class="container">
+            <div class="row" style="display:inline">
+                <div class="col-lg-12 text-center">
+                    <div class="spacing"></div>
+                    <img src="img/LOGO.png" style="width:500px;">
+                    <p class="text-red">
+                        Anda telah sukses login. Silakan berkeliling dan selamat beraktivitas! :)
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="spacing-10"></div>
+        <div class="spacing-10"></div>
+        <div class="row">
+            <div class="col-lg-4 col-md-12 text-center">
+                <img src="img/Icons-24.png" style="width:20px;display:inline-block;margin-top:-70px">
+                <div class="text-center" style="display:inline-block;">
+                    Kos Fadilah, Kukusan Teknik</br>
+                    Depok, Jawa Barat</br>
+                    14640, Indonesia
+                </div>
+            </div>
+            <div class="text-center">
+                <div class="col-lg-2" style="display:inline-block;">
+                    <img src="img/Icons-25.png" style="width:20px;">
+                    <a class="a-white" href="mailto:normapus1@gmail.com">normapus1@gmail.com</a>
+                </div>
+            </div>
+            <div class="col-lg-2 text-center">
+                <img src="img/Icons-26.png" style="width:20px;"> +62 821 1348 8621
+                <div class="spacing-10"></div>
+            </div>
+            <div class="col-lg-4 text-center">
+                <div class="row">
+                    <a href="https://www.instagram.com/normaps/"><img src="img/Socmed-23.png" style="width:30px;"></a>
+                </div>
+                <div class="spacing-10"></div>
+                <div class="spacing-10"></div>
+                <div class="row text-right" style="display:inline-block">
+                    &copy; 2017 SIGGirls a.k.a Norma & the gang. All Rights Reserved
+                </div>
+            </div>
+        </div>
+        <div class="spacing-10"></div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/tracker.js"></script>
+</body>
+
 </html>

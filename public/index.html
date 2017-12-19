@@ -16,6 +16,11 @@
 
     <!-- Theme CSS -->
     <link href="/css/idx.css" rel="stylesheet">
+    <!--
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.9/css/bootstrap-material-design.min.css" />
+    -->
+    <link rel="stylesheet" href="css/bootstrap-material-datetimepicker.css" />
+    <link rel="stylesheet" href="css/dropzone.css" />
 
 </head>
 
@@ -43,10 +48,13 @@
                             <a class="page-scroll" href="#about">Tentang TukTrack</a>
                         </li>
                         <li>
-                            <a data-toggle="modal" data-target="#myModal">Daftar Sebagai Merchant</a>
+                            <a style="cursor:pointer;" data-toggle="modal" data-target="#myModal">Daftar Sebagai Merchant</a>
                         </li>
                         <li>
                             <a class="page-scroll" href="">Coba TukTrack</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="">Login</a>
                         </li>
                     </ul>
                 </div>
@@ -63,14 +71,67 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close text-blue" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title text-right">DAFTAR SEBAGAI MERCHANT</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h1 class="modal-title text-red text-center text-bold">DAFTAR SEBAGAI MERCHANT</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Some text in the modal.</p>
+                    <div class="container">
+
+                        <form class="form-horizontal" action="/action" method="POST">
+                            <div class="form-group">
+                                <label class="text-blue control-label col-sm-2"><b>Nama Anda</b></label>
+                                <input type="text" class="form-control col-sm-4" placeholder="Masukkan nama Anda" name="name" required>
+                                <label class="text-blue control-label col-sm-2"><b>Nomor Handphone</b></label>
+                                <input name="phone" class="form-control col-sm-4" pattern="[0-9]{1,}" placeholder="Masukkan No. HP" required>
+                            </div>
+
+                            </br>
+                            </br>
+
+                            <div class="form-group">
+                                <label class="text-blue control-label col-sm-2"><b>Kategori Merchant</b></label>
+                                <select required class="form-control col-sm-6" id="category_id" name="category" required>
+                                    <option value="1">Makanan / Minuman</option>
+                                    <option value="2">Reparasi Elektronik</option>
+                                    <option value="3">Permak pakaian</option>
+                                    <option value="4">Sol sepatu</option>
+                                    <option value="5">Pijat / Urut</option>
+                                    <option value="6">Lain-lain</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="text-blue control-label col-sm-2"><b>Nama Merchant</b></label>
+                                <input type="text" class="form-control col-sm-6" name="merchant_name" placeholder="Masukkan Nama Merchant" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="text-blue control-label col-sm-2"><b>Waktu Operasional</b></label>
+                                <input name="start_time" class="form-control col-sm-2" type="chosenTime" required>
+                                <label class="text-blue control-label col-sm-2" style="text-align:center;"><b> sampai dengan </b></label>
+                                <input name="end_time" class="form-control col-sm-2" type="chosenTime" required>
+
+                            </div>
+
+                            </br>
+                            <div class="form-group col-sm-10">
+                                <label class="text-blue"><b>Deskripsi Singkat tentang Merchant</b></label>
+                                <textarea class="form-control" rows="5" style="width:100%;" id="description">Tuliskan deskripsi dari merchant Anda</textarea>
+                            </div>
+
+                            <!--
+                            <div class="form-group">
+                                <label class="text-blue"><b>Unggah Foto Merchant</b></label>
+                                <form action="/" class="dropzone" id="my-awesome-dropzone">
+                                </form>
+                            </div>
+                            -->
+
+                        </form>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default">Daftar Sekarang!</button>
+                    <input type="submit" class="btn-default sr-button button-red" value="Daftar Sekarang!">
                 </div>
             </div>
 
@@ -78,12 +139,17 @@
     </div>
 
     <header>
-        <div class="header-content" style="height:100vh">
+        <div class="header-content">
             <div class="header-content-inner" style="margin-top:20vh;">
-                <p class="text-bold" id="homeHeading">Temukan gerobakan keliling yang kamu butuhkan dalam sekejap!</p>
-                <p>
-                    <a href="" class="btn btn-primary btn-xl text-bold button-white">COBA SEKARANG</a>
-                </p>
+                <div class="col-lg-6 text-left">
+                    <p class="text-bold" id="homeHeading">Temukan gerobakan keliling yang kamu butuhkan dalam sekejap!</p>
+                    <p>
+                        <a href="" class="btn btn-primary btn-xl text-bold button-white">COBA SEKARANG</a>
+                    </p>
+                </div>
+                <div class="col-lg-6 text-right">
+                    <img src="img/LOGO.png" style="width:600px;">
+                </div>
             </div>
         </div>
     </header>
@@ -160,7 +226,13 @@
 
     <!-- Theme JavaScript -->
     <script src="js/idx.js"></script>
-    <script src="js/custom.js"></script>
+    <!--
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.9/js/material.min.js"></script>
+    -->
+    <script type="text/javascript" src="https://momentjs.com/downloads/moment-with-locales.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-material-datetimepicker.js"></script>
+    <script type="text/javascript" src="js/dropzone.js"></script>
+
 
 </body>
 
