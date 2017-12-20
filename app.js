@@ -26,12 +26,19 @@ const config = {
 };
 const pool = new Pool(config);
 // pool.connect(function(err,client,done){
-//   client.query('select * from merchants;',function(err,result){
+//   client.query('insert into merchants (id,name,phone,category_id,merchant_name,start_time,end_time,description,image) values(2,\'Abang\',\'12345678\',1,\'Nasi Goreng\',\'08:00\',\'17:00\',\'Enak Nasi Goreng\',\'www.selerasa.com/images/nasi/nasi_goreng/Resep-Dan-Cara-Membuat-Nasi-Goreng-Rumahan-Spesial-Enak-Gurih-Simpel-Dan-Praktis.jpg\');',function(err,result){
 //     done();
 //     if(err) return console.error(err);
 //     console.log(result.rows);
 //   });
 // });
+pool.connect(function(err,client,done){
+  client.query('select * from merchants;',function(err,result){
+    done();
+    if(err) return console.error(err);
+    console.log(result.rows);
+  });
+});
 //console.log(process.env.db);
 
 // client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
@@ -67,7 +74,29 @@ app.use(
         saveUninitialized: false
     })
 );
-var arr = [];
+var id = 2;
+app.post('/register',urlencodedParser, function(req, res) {
+  var phone = req.body.phone;
+  var name = req.body.name;
+  var category = req.body.category_id;
+  var merchant_name = req.body.merchant_name;
+  var start_time = req.body.start_time;
+  var end_time = req.body.end_time;
+  var description = req.body.description;
+  id += 1;
+  pool.connect(function(err,client,done){
+    client.query('insert into merchants values(' + id + ',\'' + name + '\',\'' + phone + '\','+category+',\'' + merchant_name + '\',\'' + start_time + '\',\'' + end_time + '\',\'' + description + '\');',function(err,result){
+      done();
+      if(result) {
+        // res.redirect('tracker.html');
+        // console.log(result.rows[0]);
+      }
+      else {
+
+      }
+    });
+  });
+});
 app.post('/login',urlencodedParser, function(req, res) {
   var phone = req.body.phone;
   pool.connect(function(err,client,done){
