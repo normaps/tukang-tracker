@@ -13,16 +13,18 @@ let session = require('express-session');
 //   connectionString: process.env.DATABASE_URL,
 //   ssl: true,
 // });
-var urlencodedParser = bodyParser.urlencoded({ extended: true });
+var urlencodedParser = bodyParser.urlencoded({
+    extended: true
+});
 var params = url.parse("postgres://ixesqaaioopbko:ca9d034b06e19878f28837d72f93005f2e2d62c0fa7b10af2c5c1895dfa02d25@ec2-54-83-35-31.compute-1.amazonaws.com:5432/d3ub25m81r7vep")
 const auth = params.auth.split(':');
 const config = {
-  user: auth[0],
-  password: auth[1],
-  host: params.hostname,
-  port: params.port,
-  database: params.pathname.split('/')[1],
-  ssl: true
+    user: auth[0],
+    password: auth[1],
+    host: params.hostname,
+    port: params.port,
+    database: params.pathname.split('/')[1],
+    ssl: true
 };
 const pool = new Pool(config);
 // pool.connect(function(err,client,done){
@@ -32,12 +34,12 @@ const pool = new Pool(config);
 //     console.log(result.rows);
 //   });
 // });
-pool.connect(function(err,client,done){
-  client.query('select * from merchants;',function(err,result){
-    done();
-    if(err) return console.error(err);
-    console.log(result.rows);
-  });
+pool.connect(function(err, client, done) {
+    client.query('select * from merchants;', function(err, result) {
+        done();
+        if (err) return console.error(err);
+        console.log(result.rows);
+    });
 });
 //console.log(process.env.db);
 
@@ -75,27 +77,27 @@ app.use(
     })
 );
 var id = 2;
-app.post('/register',urlencodedParser, function(req, res) {
-  var phone = req.body.phone;
-  var name = req.body.name;
-  var category = req.body.category_id;
-  var merchant_name = req.body.merchant_name;
-  var start_time = req.body.start_time;
-  var end_time = req.body.end_time;
-  var description = req.body.description;
-  id += 1;
-  pool.connect(function(err,client,done){
-    client.query('insert into merchants values(' + id + ',\'' + name + '\',\'' + phone + '\','+category+',\'' + merchant_name + '\',\'' + start_time + '\',\'' + end_time + '\',\'' + description + '\');',function(err,result){
-      done();
-      if(result) {
-        // res.redirect('tracker.html');
-        // console.log(result.rows[0]);
-      }
-      else {
+app.post('/register', urlencodedParser, function(req, res) {
+    var phone = req.body.phone;
+    var name = req.body.name;
+    var category = req.body.category_id;
+    var merchant_name = req.body.merchant_name;
+    var start_time = req.body.start_time;
+    var end_time = req.body.end_time;
+    var description = req.body.description;
+    id += 1;
+    pool.connect(function(err, client, done) {
+        client.query('insert into merchants values(' + id + ',\'' + name + '\',\'' + phone + '\',' + category + ',\'' + merchant_name + '\',\'' + start_time + '\',\'' + end_time + '\',\'' + description + '\');', function(err, result) {
+            done();
+            if (result) {
+                console.log('hahahaa', result, res);
+                res.redirect('register-success.html');
+                // console.log(result.rows[0]);
+            } else {
 
-      }
+            }
+        });
     });
-  });
 });
 
 app.post('/login',urlencodedParser, function(req, res) {
@@ -117,6 +119,7 @@ app.post('/login',urlencodedParser, function(req, res) {
       }
     });
   });
+});
   // console.log("hi");
   // res.send(req.body.phone);
   // io.on('connection', socket => {
@@ -135,7 +138,6 @@ app.post('/login',urlencodedParser, function(req, res) {
   // 	})
   // })
   //res.redirect('tracker.html')
-});
 app.get('/merchant_categories', urlencodedParser, function(req, res) {
   pool.connect(function(err,client,done){
     client.query('select * from merchant_categories;',function(err,result){
@@ -187,8 +189,8 @@ io.on('connection', socket => {
 })
 
 server.listen(port, err => {
-	if (err) {
-		throw err
-	}
-	console.log('server started on port ' + port)
+    if (err) {
+        throw err
+    }
+    console.log('server started on port ' + port)
 })
