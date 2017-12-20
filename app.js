@@ -97,12 +97,18 @@ app.post('/register',urlencodedParser, function(req, res) {
     });
   });
 });
+
 app.post('/login',urlencodedParser, function(req, res) {
   var phone = req.body.phone;
   pool.connect(function(err,client,done){
     client.query('select * from merchants where phone=\''+ phone + '\';',function(err,result){
       done();
       if(result) {
+      	var merchant_id = result.rows[0].id;
+      	locationMap.set(merchant_id, {lat: null, lng: null})
+      	io.on('connection', socket => {
+      		socket.emit('myID', merchant_id)
+      	})
         res.redirect('tracker.html');
         console.log(result.rows[0]);
       }
@@ -114,22 +120,71 @@ app.post('/login',urlencodedParser, function(req, res) {
   // console.log("hi");
   // res.send(req.body.phone);
   // io.on('connection', socket => {
-  // 	locationMap.set(socket.id, {lat: null, lng: null})
+  // 	locationMap.set(merchant_id, {lat: null, lng: null})
   // 	socket.on('updateLocation', pos => {
-  // 		if (locationMap.has(socket.id)) {
-  // 			locationMap.set(socket.id, pos)
-  // 			console.log(socket.id, pos)
+  // 		if (locationMap.has(merchant_id)) {
+  // 			locationMap.set(merchant_id, pos)
+  // 			console.log(merchant_id, pos)
   //       arr.push(pos)
   //       console.log(arr);
   // 		}
   // 	})
   //
   // 	socket.on('disconnect', () => {
-  // 		locationMap.delete(socket.id)
+  // 		locationMap.delete(merchant_id)
   // 	})
   // })
   //res.redirect('tracker.html')
 });
+app.get('/merchant_categories', urlencodedParser, function(req, res) {
+  pool.connect(function(err,client,done){
+    client.query('select * from merchant_categories;',function(err,result){
+      done();
+      if(result) {
+      	res.send(result.rows);
+      }
+      else {
+      	throw err;
+      }
+    });
+  });
+});
+app.get('/merchant/:id', urlencodedParser, function(req, res) {
+	var id = req.params.id
+  	pool.connect(function(err,client,done){
+    	client.query('select * from merchants where id='+ id +';',function(err,result){
+	      	done();
+	      	if(result) {
+	      		res.send(result.rows);
+	      	}
+	      	else {
+	      		throw err;
+	      	}
+    	});
+  	});
+});
+
+io.on('connection', socket => {
+
+	socket.on('updateLocation', data => {
+		data.forEach(([merchant_id, pos]) => {
+			const {lat , lng} = pos
+			if (locationMap.has(merchant_id)) {
+				locationMap.set(merchant_id, {lat ,lng})
+							const tmp = locationMap.size
+			}
+		})
+	})
+
+	socket.on('requestLocations', () => {
+		socket.emit('locationsUpdate', Array.from(locationMap))
+	})
+
+	socket.on('disconnect', merchant_id => {
+		io.emit('trackerDisconnected', merchant_id)
+		locationMap.delete(merchant_id)
+	})
+})
 
 server.listen(port, err => {
 	if (err) {
