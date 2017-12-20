@@ -5,14 +5,34 @@ const path = require('path')
 const http = require('http')
 const bodyParser = require('body-parser')
 const socketIo = require('socket.io')
-const { Client } = require('pg')
+const pg = require('pg')
+const Pool = require('pg-pool');
+const url = require('url')
 let session = require('express-session');
-const client = new Client({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-});
+// const client = new Client({
+//   connectionString: process.env.DATABASE_URL,
+//   ssl: true,
+// });
 var urlencodedParser = bodyParser.urlencoded({ extended: true });
-client.connect();
+var params = url.parse("postgres://ixesqaaioopbko:ca9d034b06e19878f28837d72f93005f2e2d62c0fa7b10af2c5c1895dfa02d25@ec2-54-83-35-31.compute-1.amazonaws.com:5432/d3ub25m81r7vep")
+const auth = params.auth.split(':');
+const config = {
+  user: auth[0],
+  password: auth[1],
+  host: params.hostname,
+  port: params.port,
+  database: params.pathname.split('/')[1],
+  ssl: true
+};
+const pool = new Pool(config);
+// pool.connect(function(err,client,done){
+//   client.query('select * from merchants;',function(err,result){
+//     done();
+//     if(err) return console.error(err);
+//     console.log(result.rows);
+//   });
+// });
+//console.log(process.env.db);
 
 // client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
 //   if (err) throw err;
@@ -49,16 +69,21 @@ app.use(
 );
 var arr = [];
 app.post('/login',urlencodedParser, function(req, res) {
-  client.query('SELECT * FROM merchants;', (err, res) => {
-    if (err) throw err;
-    for (let row of res.rows) {
-      console.log(JSON.stringify(row));
-      console.log("he");
-    }
-    client.end();
+  var phone = req.body.phone;
+  pool.connect(function(err,client,done){
+    client.query('select * from merchants where phone=\''+ phone + '\';',function(err,result){
+      done();
+      if(result) {
+        res.redirect('tracker.html');
+        console.log(result.rows[0]);
+      }
+      else {
+
+      }
+    });
   });
-  console.log("hi");
-  res.send(req.body.phone);
+  // console.log("hi");
+  // res.send(req.body.phone);
   // io.on('connection', socket => {
   // 	locationMap.set(socket.id, {lat: null, lng: null})
   // 	socket.on('updateLocation', pos => {
