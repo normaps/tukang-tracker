@@ -1,3 +1,5 @@
+let positions = new Map()
+
 document.addEventListener('DOMContentLoaded', () => {
 	const socket = io('/')
 
@@ -5,12 +7,21 @@ document.addEventListener('DOMContentLoaded', () => {
 		enableHighAccuracy: true,
 		maximumAge: 0
 	}
+	
+	var id = null
+	socket.on('myID', merchant_id => {
+		id = merchant_id
+	})
 
 	setInterval(() => {
 		console.log('tick')
 		navigator.geolocation.getCurrentPosition(pos => {
 			const { latitude: lat, longitude: lng} = pos.coords	
-			socket.emit('updateLocation', {lat, lng})
+			if (positions.has(id)) {
+				positions.delete(id)
+			}
+			positions.set(id, {lat, lng})
+			socket.emit('updateLocation', Array.from(positions))
 		}, err => {
 			console.log(err)
 		}, positionOptions)

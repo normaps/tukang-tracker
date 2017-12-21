@@ -1,27 +1,260 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta name="viewport" content="initial-scale=1.0">
-	    <meta charset="utf-8">
-	    <title>Map Viewer</title>
-	    <style>
-	      /* Always set the map height explicitly to define the size of the div
-	       * element that contains the map. */
-	      #map {
-	        height: 100%;
-	      }
-	      /* Optional: Makes the sample page fill the window. */
-	      html, body {
-	        height: 100%;
-	        margin: 0;
-	        padding: 0;
-	      }
-	    </style>
-	</head>
-	<body>
-    <div id="map"></div>
-		<script src="/socket.io/socket.io.js"></script>
-		<script src="/js/viewer.js"></script>
-		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLCb3Mf7V-3V4VF4ROBUsgIyJ9wrhpdI4&callback=initMap" async defer></script>
-	</body>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" href="img/LOGO">
+    <title>Tukang Tracker</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Theme CSS -->
+    <link href="/css/idx.css" rel="stylesheet">
+    <!--
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.9/css/bootstrap-material-design.min.css" />
+    -->
+    <link rel="stylesheet" href="css/bootstrap-material-datetimepicker.css" />
+    <link rel="stylesheet" href="css/dropzone.css" />
+
+</head>
+
+<body id="page-top">
+    <div style="display:inline">
+        <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header" style="margin-top:-20px">
+                    <div>
+                        <div class="b-padding-10"></div>
+                        <div class="b-padding-10"></div>
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>menu
+                    </button>
+                    </div>
+                    <a class="navbar-brand" href="/" style="margin-bottom:5px"><img src="img/LOGOWHITE.png" style="margin-top:-10px;width:80px;"></a>
+                    <div class="b-padding-10"></div>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="margin-top:5px">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a class="page-scroll" href="#about">Tentang TukTrack</a>
+                        </li>
+                        <li>
+                            <a style="cursor:pointer;" data-toggle="modal" data-target="#myModal">Daftar Sebagai Merchant</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="">Coba TukTrack</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" data-toggle="modal" data-target="#loginModal">Login</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+    </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h1 class="modal-title text-red text-center text-bold">DAFTAR SEBAGAI MERCHANT</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+
+                        <form class="form-horizontal" action="/register" method="POST">
+                            <div class="form-group">
+                                <label class="text-blue control-label col-sm-2"><b>Nama Anda</b></label>
+                                <input type="text" class="form-control col-sm-4" placeholder="Masukkan nama Anda" name="name" required>
+                                <label class="text-blue control-label col-sm-2"><b>Nomor Handphone</b></label>
+                                <input name="phone" class="form-control col-sm-4" pattern="[0-9]{1,}" placeholder="Masukkan No. HP" required>
+                            </div>
+
+                            </br>
+                            </br>
+
+                            <div class="form-group">
+                                <label class="text-blue control-label col-sm-2"><b>Kategori Merchant</b></label>
+                                <select required class="form-control col-sm-6" id="category_id" name="category" required>
+                                    <option value="1">Makanan / Minuman</option>
+                                    <option value="2">Reparasi Elektronik</option>
+                                    <option value="3">Permak pakaian</option>
+                                    <option value="4">Sol sepatu</option>
+                                    <option value="5">Pijat / Urut</option>
+                                    <option value="6">Lain-lain</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="text-blue control-label col-sm-2"><b>Nama Merchant</b></label>
+                                <input type="text" class="form-control col-sm-6" name="merchant_name" placeholder="Masukkan Nama Merchant" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="text-blue control-label col-sm-2"><b>Waktu Operasional</b></label>
+                                <input name="start_time" class="form-control col-sm-2" type="chosenTime" required>
+                                <label class="text-blue control-label col-sm-2" style="text-align:center;"><b> sampai dengan </b></label>
+                                <input name="end_time" class="form-control col-sm-2" type="chosenTime" required>
+
+                            </div>
+
+                            </br>
+                            <div class="form-group col-sm-10">
+                                <label class="text-blue"><b>Deskripsi Singkat tentang Merchant</b></label>
+                                <textarea class="form-control" rows="5" style="width:100%;" id="description">Tuliskan deskripsi dari merchant Anda</textarea>
+                            </div>
+
+                            <!--
+                            <div class="form-group">
+                                <label class="text-blue"><b>Unggah Foto Merchant</b></label>
+                                <form action="/" class="dropzone" id="my-awesome-dropzone">
+                                </form>
+                            </div>
+                            -->
+
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn-default sr-button button-red" value="Daftar Sekarang!">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="loginModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h1 class="modal-title text-red text-center text-bold">Login</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+
+                        <form class="form-horizontal" action="/login" method="POST">
+                            <div class="form-group">
+                                <label class="text-blue control-label col-sm-offset-3 col-sm-2"><b>Nomor Handphone</b></label>
+                                <input name="phone" class="form-control col-sm-4" pattern="[0-9]{1,}" placeholder="Masukkan No. HP" required>
+                            </div>
+
+
+                            <!--
+                            <div class="form-group">
+                                <label class="text-blue"><b>Unggah Foto Merchant</b></label>
+                                <form action="/" class="dropzone" id="my-awesome-dropzone">
+                                </form>
+                            </div>
+                            -->
+
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn-default sr-button button-red" value="Masuk Sekarang!">
+                </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <section class="bg-search">
+        <div class="container">
+            <div class="row" style="display:inline">
+                <div class="col-lg-12 text-left">
+                	<form class="form-horizontal" action="/search" method="POST">
+                        <div class="form-group">
+                            <label class="text-blue control-label col-lg-2"><b>Cari Merchant</b></label>
+                            <input type="text" class="form-control col-lg-12" name="merchant_name" placeholder="Masukkan Nama Merchant" style="font-size:20px"required>
+                        </div>
+                        <div id="categories">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="map" style="margin: 0; padding:0;"></div>
+
+    <footer>
+        <div class="spacing-10"></div>
+        <div class="spacing-10"></div>
+        <div class="row">
+            <div class="col-lg-4 col-md-12 text-center">
+                <img src="img/Icons-24.png" style="width:20px;display:inline-block;margin-top:-70px">
+                <div class="text-center" style="display:inline-block;">
+                    Kos Fadilah, Kukusan Teknik</br>
+                    Depok, Jawa Barat</br>
+                    14640, Indonesia
+                </div>
+            </div>
+            <div class="text-center">
+                <div class="col-lg-2" style="display:inline-block;">
+                    <img src="img/Icons-25.png" style="width:20px;">
+                    <a class="a-white" href="mailto:normapus1@gmail.com">normapus1@gmail.com</a>
+                </div>
+            </div>
+            <div class="col-lg-2 text-center">
+                <img src="img/Icons-26.png" style="width:20px;"> +62 821 1348 8621
+                <div class="spacing-10"></div>
+            </div>
+            <div class="col-lg-4 text-center">
+                <div class="row">
+                    <a href="https://www.instagram.com/normaps/"><img src="img/Socmed-23.png" style="width:30px;"></a>
+                </div>
+                <div class="spacing-10"></div>
+                <div class="spacing-10"></div>
+                <div class="row text-right" style="display:inline-block">
+                    &copy; 2017 SIGGirls a.k.a Norma & the gang. All Rights Reserved
+                </div>
+            </div>
+        </div>
+        <div class="spacing-10"></div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="vendor/scrollreveal/scrollreveal.min.js"></script>
+
+    <!-- Theme JavaScript -->
+    <script src="js/idx.js"></script>
+    <!--
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.9/js/material.min.js"></script>
+    -->
+    <script type="text/javascript" src="https://momentjs.com/downloads/moment-with-locales.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-material-datetimepicker.js"></script>
+    <script type="text/javascript" src="js/dropzone.js"></script>
+
+    <!-- Map and Tracking Javascript -->
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="/js/viewer.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLCb3Mf7V-3V4VF4ROBUsgIyJ9wrhpdI4&callback=initMap" async defer></script>
+</body>
+
 </html>
