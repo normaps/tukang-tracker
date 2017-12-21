@@ -1,5 +1,6 @@
 let map
 let markers = new Map()
+let origin
 
 document.addEventListener('DOMContentLoaded', () => {
 	const socket = io('/')
@@ -23,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 						map,
 						title: ''+ id
 					})
-					addWindowMarker(marker, id)
+					addWindowMarker(marker, id, position)
 				}
 			}
 		})
@@ -36,7 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
 	getMerchantCategories()
 })
 
-function addWindowMarker(marker, id) {
+function callback(position) {
+	return position.coords;
+}
+
+function addWindowMarker(marker, id, destination) {
 	console.log('ini id masuk window ' + id)
 	var request = new XMLHttpRequest();
 	request.open('GET', '/merchant/' + id, true);
@@ -51,12 +56,19 @@ function addWindowMarker(marker, id) {
 	    	'<br><i class="fa fa-user text-blue" aria-hidden="true" style="margin-left:3px">'+ merchant.name +'</i>' + 
 	    	'<br><i class="fa fa-phone text-blue" aria-hidden="true" style="margin-left:3px">'+ merchant.phone +'</i></p>';
 	    })
-	    
+	    var origin = ''
+	    navigator.geolocation.getCurrentPosition(callback, err => {
+			console.log(err)
+		})
+		origin = {latitude:'-6.3656451999999994', longitude:'106.8243942'}
+		console.log(origin + 'origin')
+	    // duration = getLocation(origin, destination)
+	    elements += '<br><span class="text-blue">3 minutes</span>'
 	    var infowindow = new google.maps.InfoWindow({
 	      content: elements
 	    })
 		marker.addListener('click', function() {
-	      infowindow.open(map, marker)
+	     	infowindow.open(map, marker)
 	    })
 	  } else {
 	    // We reached our target server, but it returned an error
@@ -80,70 +92,59 @@ function initMap() {
 	})
 }
 
-function getLocation() {
-        var bounds = new google.maps.LatLngBounds;
-        var markersArray = [];
+function getLocation(origin, destination) {
+	var request = new XMLHttpRequest();
+	request.open('GET', 'https://maps.googleapis.com/maps/api/distancematrix/json?origins='+ origin.latitude + ','+ origin.longitude +'&destinations='+ destination.latitude+','+ destination.longitude+'&mode=bicycling&key=AIzaSyA-g4DhMSfwpk8ULJzTMTbDDcvvCR4SMBM', true);
+	request.onload = function() {
+	  if (request.status >= 200 && request.status < 400) {
+	    // Success!
+	    var data = JSON.parse(request.responseText);
+	    console.log(data)
+	  } else {
+	    // We reached our target server, but it returned an error
+	  }
+	};
+	request.onerror = function() {
+	  // There was a connection error of some sort
+	};
+	request.send();
+    //     var bounds = new google.maps.LatLngBounds;
+    //     var markersArray = [];
+    //     var locOrigin = new google.maps.LatLng(origin.latitude, origin.longitude);
+    //     var nameOrigin = 'Origin';
+    //     var nameDestination = 'Destination';
+    //     var locDestination = new google.maps.LatLng(destination.latitude, destination.longitude);
+    //     var destinationIcon = 'https://chart.googleapis.com/chart?' +
+    //         'chst=d_map_pin_letter&chld=D|FF0000|000000';
+    //     var originIcon = 'https://chart.googleapis.com/chart?' +
+    //         'chst=d_map_pin_letter&chld=O|FFFF00|000000';
+    //     var geocoder = new google.maps.Geocoder;
 
-        var locOrigin = {lat: , lng: };
-        var nameOrigin = ', ';
-        var nameDestination = ', ';
-        var locDestination = {lat: , lng: };
-
-        var destinationIcon = 'https://chart.googleapis.com/chart?' +
-            'chst=d_map_pin_letter&chld=D|FF0000|000000';
-        var originIcon = 'https://chart.googleapis.com/chart?' +
-            'chst=d_map_pin_letter&chld=O|FFFF00|000000';
-        var map = ;
-        var geocoder = new google.maps.Geocoder;
-
-        var service = new google.maps.DistanceMatrixService;
-        service.getDistanceMatrix({
-          origins: [locOrigin, nameOrigin],
-          destinations: [nameDestination, locDestination],
-          travelMode: 'DRIVING',
-          unitSystem: google.maps.UnitSystem.METRIC,
-          avoidHighways: false,
-          avoidTolls: false
-        }, function(response, status) {
-          if (status !== 'OK') {
-            alert('Error was: ' + status);
-          } else {
-            var originList = response.originAddresses;
-            var destinationList = response.nameDestinationddresses;
-            var outputDiv = document.getElementById('output');
-            outputDiv.innerHTML = '';
-            deleteMarkers(markersArray);
-
-            var showGeocodedAddressOnMap = function(asDestination) {
-              var icon = asDestination ? destinationIcon : originIcon;
-              return function(results, status) {
-                if (status === 'OK') {
-                  map.fitBounds(bounds.extend(results[0].geometry.location));
-                  markersArray.push(new google.maps.Marker({
-                    map: map,
-                    position: results[0].geometry.location,
-                    icon: icon
-                  }));
-                } else {
-                  alert('Geocode was not successful due to: ' + status);
-                }
-              };
-            };
-
-            for (var i = 0; i < originList.length; i++) {
-              var results = response.rows[i].elements;
-              geocoder.geocode({'address': originList[i]},
-                  showGeocodedAddressOnMap(false));
-              for (var j = 0; j < results.length; j++) {
-                geocoder.geocode({'address': destinationList[j]},
-                    showGeocodedAddressOnMap(true));
-                outputDiv.innerHTML += originList[i] + ' to ' + destinationList[j] +
-                    ': ' + results[j].distance.text + ' in ' +
-                    results[j].duration.text + '<br>';
-              }
-            }
-          }
-        });
+    //     var service = new google.maps.DistanceMatrixService;
+    //     service.getDistanceMatrix({
+    //       origins: [locOrigin, nameOrigin],
+    //       destinations: [nameDestination, locDestination],
+    //       travelMode: 'DRIVING',
+    //       unitSystem: google.maps.UnitSystem.METRIC,
+    //       avoidHighways: false,
+    //       avoidTolls: false
+    //     }, function(response, status) {
+    //       if (status == 'OK') {
+		  //   var origins = response.originAddresses;
+		  //   var destinations = response.destinationAddresses;
+		  //   for (var i = 0; i < origins.length; i++) {
+		  //     var results = response.rows[i].elements;
+		  //     for (var j = 0; j < results.length; j++) {
+		  //       var element = results[j];
+		  //       		    console.log(element)
+		  //       var distance = element.distance.text;
+		  //       var duration = element.duration.text;
+		  //       var from = origins[i];
+		  //       var to = destinations[j];
+		  //     }
+		  //   }
+		  // }
+    //     });
       }
 
       function deleteMarkers(markersArray) {
