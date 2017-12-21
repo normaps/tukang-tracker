@@ -89,7 +89,7 @@ app.post('/register', urlencodedParser, function(req, res) {
     var password = req.body.password;
 
     pool.connect(function(err, client, done) {
-        client.query('insert into merchants (id,name,phone,category_id,merchant_name,start_time,end_time,description,image,password) values(' + id + ',\'' + name + '\',\'' + phone + '\',' + category + ',\'' + merchant_name + '\',\'' + start_time + '\',\'' + end_time + '\',\'' + description + '\',\'' + photo + '\',\'' + password + '\');', function(err, result) {
+        client.query('insert into merchants (name,phone,category_id,merchant_name,start_time,end_time,description,image,password) values(' + name + '\',\'' + phone + '\',' + category + ',\'' + merchant_name + '\',\'' + start_time + '\',\'' + end_time + '\',\'' + description + '\',\'' + photo + '\',\'' + password + '\');', function(err, result) {
             done();
             if (result) {
                 console.log('cihuuyyyy');
