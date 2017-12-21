@@ -164,15 +164,15 @@ function searchTukang(keyword) {
 	// console.log(obj);
 }
 
-function pickCategory(categoryInput) {
-	let arr = [
-	    { id: ,name:"string 1", phone:"this", merchant_name: "that", category: "makanan" },
-	    { id: ,name:"string 2", phone:"this", merchant_name: "that", category: "minuman" }
-	];
+// function pickCategory(categoryInput) {
+// 	let arr = [
+// 	    { id: ,name:"string 1", phone:"this", merchant_name: "that", category: "makanan" },
+// 	    { id: ,name:"string 2", phone:"this", merchant_name: "that", category: "minuman" }
+// 	];
 
-	let obj = arr.find(o => o.category === categoryInput);
-	console.log(obj);
-}
+// 	let obj = arr.find(o => o.category === categoryInput);
+// 	console.log(obj);
+// }
 
 function getMerchantCategories() {
 	var request = new XMLHttpRequest();
