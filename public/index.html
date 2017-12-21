@@ -84,6 +84,8 @@
                                 <input type="text" class="form-control col-sm-4" placeholder="Masukkan nama Anda" name="name" required>
                                 <label class="text-blue control-label col-sm-2"><b>Nomor Handphone</b></label>
                                 <input name="phone" class="form-control col-sm-4" pattern="[0-9]{1,}" placeholder="Masukkan No. HP" required>
+                                <label class="text-blue control-label col-sm-2"><b>Password</b></label>
+                                <input type="password" name="password" class="form-control col-sm-4" placeholder="Masukkan Kata Sandi" required>
                             </div>
 
                             </br>
@@ -117,12 +119,12 @@
                             </br>
                             <div class="form-group col-sm-10">
                                 <label class="text-blue"><b>Deskripsi Singkat tentang Merchant</b></label>
-                                <textarea class="form-control" rows="5" style="width:100%;" id="description"></textarea>
+                                <textarea class="form-control" rows="5" style="width:100%;" id="description" name="description"></textarea>
                             </div>
 
                             <div class="form-group col-sm-10">
                                 <label class="text-blue"><b>Unggah Foto Merchant</b></label>
-                                <input class="form-control" type="file" onchange="previewFile()"><br>
+                                <input name="photo" class="form-control" type="file" onchange="previewFile()"><br>
                                 <img src="" height="200" alt="Image preview...">
                             </div>
 
@@ -162,6 +164,10 @@
                             <div class="form-group">
                                 <label class="text-blue control-label col-sm-offset-3 col-sm-2"><b>Nomor Handphone</b></label>
                                 <input name="phone" class="form-control col-sm-4" pattern="[0-9]{1,}" placeholder="Masukkan No. HP" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="text-blue control-label col-sm-offset-3 col-sm-2"><b>Nomor Handphone</b></label>
+                                <input name="password" class="form-control col-sm-4" placeholder="Masukkan Password" required>
                             </div>
                     </div>
                 </div>
