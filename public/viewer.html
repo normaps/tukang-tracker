@@ -46,13 +46,13 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="margin-top:5px">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a class="page-scroll" href="#about">Tentang TukTrack</a>
+                            <a class="page-scroll" href="/#about">Tentang TukTrack</a>
                         </li>
                         <li>
                             <a style="cursor:pointer;" data-toggle="modal" data-target="#myModal">Daftar Sebagai Merchant</a>
                         </li>
                         <li>
-                            <a class="page-scroll" href="">Coba TukTrack</a>
+                            <a class="active page-scroll" href="">Coba Cari</a>
                         </li>
                         <li>
                             <a class="page-scroll" data-toggle="modal" data-target="#loginModal">Login</a>
@@ -156,17 +156,10 @@
                                 <label class="text-blue control-label col-sm-offset-3 col-sm-2"><b>Nomor Handphone</b></label>
                                 <input name="phone" class="form-control col-sm-4" pattern="[0-9]{1,}" placeholder="Masukkan No. HP" required>
                             </div>
-
-
-                            <!--
                             <div class="form-group">
-                                <label class="text-blue"><b>Unggah Foto Merchant</b></label>
-                                <form action="/" class="dropzone" id="my-awesome-dropzone">
-                                </form>
+                                <label class="text-blue control-label col-sm-offset-3 col-sm-2"><b>Password</b></label>
+                                <input name="password" class="form-control col-sm-4" placeholder="Masukkan Password" required>
                             </div>
-                            -->
-
-
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -182,10 +175,10 @@
         <div class="container">
             <div class="row" style="display:inline">
                 <div class="col-lg-12 text-left">
-                	<form class="form-horizontal" action="/search" method="POST">
+                    <form class="form-horizontal" action="/search" method="POST">
                         <div class="form-group">
                             <label class="text-blue control-label col-lg-2"><b>Cari Merchant</b></label>
-                            <input type="text" class="form-control col-lg-12" name="merchant_name" placeholder="Masukkan Nama Merchant" style="font-size:20px"required>
+                            <input type="text" class="form-control col-lg-12" name="merchant_name" placeholder="Masukkan Nama Merchant" style="font-size:20px" required>
                         </div>
                         <div id="categories">
                         </div>
@@ -197,7 +190,7 @@
 
     <div id="map" style="margin: 0; padding:0;"></div>
 
-    <footer>
+    <footer style="position:absolute;">
         <div class="spacing-10"></div>
         <div class="spacing-10"></div>
         <div class="row">
@@ -253,10 +246,8 @@
     <script type="text/javascript" src="js/dropzone.js"></script>
 
     <!-- Map and Tracking Javascript -->
-	<script src="/socket.io/socket.io.js"></script>
-	<script src="/js/viewer.js"></script>
-	<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLCb3Mf7V-3V4VF4ROBUsgIyJ9wrhpdI4&callback=initMap" async defer></script> -->
-	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-g4DhMSfwpk8ULJzTMTbDDcvvCR4SMBM&callback=initMap">
-    </script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/viewer.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLCb3Mf7V-3V4VF4ROBUsgIyJ9wrhpdI4&callback=initMap" async defer></script>
 </body>
 </html>

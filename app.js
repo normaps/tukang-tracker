@@ -62,9 +62,13 @@ var port = process.env.PORT || 8080
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.get('/logout', function(req, res) {
-    req.session.destroy(function() {
-        res.redirect('/');
-    });
+  var merchant_id = res.locals.merchant;
+  console.log(merchant_id);
+  // console.log(req.session.user);
+  io.on('connection', socket => {
+    socket.emit('disconnect', merchant_id)
+  })
+  res.redirect('/');
 });
 app.use(
     session({
@@ -89,7 +93,7 @@ app.post('/register', urlencodedParser, function(req, res) {
     var password = req.body.password;
 
     pool.connect(function(err, client, done) {
-        client.query('insert into merchants (id,name,phone,category_id,merchant_name,start_time,end_time,description,image,password) values(' + id + ',\'' + name + '\',\'' + phone + '\',' + category + ',\'' + merchant_name + '\',\'' + start_time + '\',\'' + end_time + '\',\'' + description + '\',\'' + photo + '\',\'' + password + '\');', function(err, result) {
+        client.query('insert into merchants (name,phone,category_id,merchant_name,start_time,end_time,description,image,password) values(' + '\'' + name + '\',\'' + phone + '\',\'' + category + '\',\'' + merchant_name + '\',\'' + start_time + '\',\'' + end_time + '\',\'' + description + '\',\'' + photo + '\',\'' + password + '\');', function(err, result) {
             done();
             if (result) {
                 console.log('cihuuyyyy');
@@ -102,25 +106,24 @@ app.post('/register', urlencodedParser, function(req, res) {
         });
     });
 });
-
-app.post('/login', urlencodedParser, function(req, res) {
-    var phone = req.body.phone;
-    var password = req.body.password;
-    pool.connect(function(err, client, done) {
-        client.query('select * from merchants where phone=\'' + phone + '\' AND password=\'' + password + '\';', function(err, result) {
-            done();
-            if (result) {
-                var merchant_id = result.rows[0].id;
-                locationMap.set(merchant_id, {
-                    lat: null,
-                    lng: null
-                })
-                io.on('connection', socket => {
-                    socket.emit('myID', merchant_id)
-                })
-                res.redirect('tracker.html');
-                console.log(result.rows[0]);
-            } else {
+app.post('/login',urlencodedParser, function(req, res) {
+  var phone = req.body.phone;
+  var password = req.body.password;
+  pool.connect(function(err,client,done){
+    client.query('select * from merchants where phone=\''+ phone + '\' AND password=\'' + password + '\';',function(err,result){
+      done();
+      if(result) {
+        req.session.user = result;
+      	var merchant_id = result.rows[0].id;
+      	locationMap.set(merchant_id, {lat: null, lng: null})
+      	io.on('connection', socket => {
+      		socket.emit('myID', merchant_id)
+      	})
+        res.locals.merchant = merchant_id;
+        res.redirect('tracker.html');
+        console.log(res.locals.merchant);
+      }
+      else {
 
             }
         });
