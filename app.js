@@ -106,8 +106,6 @@ app.post('/register', urlencodedParser, function(req, res) {
         });
     });
 });
-
-<<<<<<< HEAD
 app.post('/login',urlencodedParser, function(req, res) {
   var phone = req.body.phone;
   var password = req.body.password;
@@ -126,26 +124,6 @@ app.post('/login',urlencodedParser, function(req, res) {
         console.log(res.locals.merchant);
       }
       else {
-=======
-app.post('/login', urlencodedParser, function(req, res) {
-    var phone = req.body.phone;
-    var password = req.body.password;
-    pool.connect(function(err, client, done) {
-        client.query('select * from merchants where phone=\'' + phone + '\' AND password=\'' + password + '\';', function(err, result) {
-            done();
-            if (result) {
-                var merchant_id = result.rows[0].id;
-                locationMap.set(merchant_id, {
-                    lat: null,
-                    lng: null
-                })
-                io.on('connection', socket => {
-                    socket.emit('myID', merchant_id)
-                })
-                res.redirect('tracker.html');
-                console.log(result.rows[0]);
-            } else {
->>>>>>> 89b0231f62f28fb4a2533925c00bccd70d266334
 
             }
         });
