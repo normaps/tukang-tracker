@@ -90,24 +90,10 @@ app.post('/register', urlencodedParser, function(req, res) {
     var end_time = req.body.end_time;
     var description = req.body.description;
     var photo = null;
-    console.log(phone);
-    console.log(name);
-    console.log(category);
-    console.log(merchant_name);
-    console.log(start_time);
-    console.log(end_time);
-    console.log(description);
+    var password = req.body.password;
 
-    id += 1;
-    // pool.connect(function(err, client, done) {
-    //     client.query('insert into merchants (name,phone,category_id,merchant_name,start_time,end_time,description,image) values(name,phone,category,merchant_name,start_time,end_time,description,photo);', function(err, result) {
-    //         done();
-    //         if (err) return console.error(err);
-    //         console.log(result.rows);
-    //     });
-    // });
     pool.connect(function(err, client, done) {
-        client.query('insert into merchants (id,name,phone,category_id,merchant_name,start_time,end_time,description,image) values(' + id + ',\'' + name + '\',\'' + phone + '\',' + category + ',\'' + merchant_name + '\',\'' + start_time + '\',\'' + end_time + '\',\'' + description + '\',\'' + photo + '\');', function(err, result) {
+        client.query('insert into merchants (name,phone,category_id,merchant_name,start_time,end_time,description,image,password) values(' + '\'' + name + '\',\'' + phone + '\',\'' + category + '\',\'' + merchant_name + '\',\'' + start_time + '\',\'' + end_time + '\',\'' + description + '\',\'' + photo + '\',\'' + password + '\');', function(err, result) {
             done();
             if (result) {
                 console.log('cihuuyyyy');
@@ -121,6 +107,7 @@ app.post('/register', urlencodedParser, function(req, res) {
     });
 });
 
+<<<<<<< HEAD
 app.post('/login',urlencodedParser, function(req, res) {
   var phone = req.body.phone;
   var password = req.body.password;
@@ -139,77 +126,101 @@ app.post('/login',urlencodedParser, function(req, res) {
         console.log(res.locals.merchant);
       }
       else {
+=======
+app.post('/login', urlencodedParser, function(req, res) {
+    var phone = req.body.phone;
+    var password = req.body.password;
+    pool.connect(function(err, client, done) {
+        client.query('select * from merchants where phone=\'' + phone + '\' AND password=\'' + password + '\';', function(err, result) {
+            done();
+            if (result) {
+                var merchant_id = result.rows[0].id;
+                locationMap.set(merchant_id, {
+                    lat: null,
+                    lng: null
+                })
+                io.on('connection', socket => {
+                    socket.emit('myID', merchant_id)
+                })
+                res.redirect('tracker.html');
+                console.log(result.rows[0]);
+            } else {
+>>>>>>> 89b0231f62f28fb4a2533925c00bccd70d266334
 
-      }
+            }
+        });
     });
-  });
 });
-  // console.log("hi");
-  // res.send(req.body.phone);
-  // io.on('connection', socket => {
-  // 	locationMap.set(merchant_id, {lat: null, lng: null})
-  // 	socket.on('updateLocation', pos => {
-  // 		if (locationMap.has(merchant_id)) {
-  // 			locationMap.set(merchant_id, pos)
-  // 			console.log(merchant_id, pos)
-  //       arr.push(pos)
-  //       console.log(arr);
-  // 		}
-  // 	})
-  //
-  // 	socket.on('disconnect', () => {
-  // 		locationMap.delete(merchant_id)
-  // 	})
-  // })
-  //res.redirect('tracker.html')
+// console.log("hi");
+// res.send(req.body.phone);
+// io.on('connection', socket => {
+// 	locationMap.set(merchant_id, {lat: null, lng: null})
+// 	socket.on('updateLocation', pos => {
+// 		if (locationMap.has(merchant_id)) {
+// 			locationMap.set(merchant_id, pos)
+// 			console.log(merchant_id, pos)
+//       arr.push(pos)
+//       console.log(arr);
+// 		}
+// 	})
+//
+// 	socket.on('disconnect', () => {
+// 		locationMap.delete(merchant_id)
+// 	})
+// })
+//res.redirect('tracker.html')
 app.get('/merchant_categories', urlencodedParser, function(req, res) {
-  pool.connect(function(err,client,done){
-    client.query('select * from merchant_categories;',function(err,result){
-      done();
-      if(result) {
-      	res.send(result.rows);
-      }
-      else {
-      	throw err;
-      }
+    pool.connect(function(err, client, done) {
+        client.query('select * from merchant_categories;', function(err, result) {
+            done();
+            if (result) {
+                res.send(result.rows);
+            } else {
+                throw err;
+            }
+        });
     });
-  });
 });
 app.get('/merchant/:id', urlencodedParser, function(req, res) {
-	var id = req.params.id
-  	pool.connect(function(err,client,done){
-    	client.query('select * from merchants where id='+ id +';',function(err,result){
-	      	done();
-	      	if(result) {
-	      		res.send(result.rows);
-	      	}
-	      	else {
-	      		throw err;
-	      	}
-    	});
-  	});
+    var id = req.params.id
+    pool.connect(function(err, client, done) {
+        client.query('select * from merchants where id=' + id + ';', function(err, result) {
+            done();
+            if (result) {
+                res.send(result.rows);
+            } else {
+                throw err;
+            }
+        });
+    });
 });
 
 io.on('connection', socket => {
 
-	socket.on('updateLocation', data => {
-		data.forEach(([merchant_id, pos]) => {
-			const {lat , lng} = pos
-			if (locationMap.has(merchant_id)) {
-				locationMap.set(merchant_id, {lat ,lng})
-							const tmp = locationMap.size
-			}
-		})
-	})
+    socket.on('updateLocation', data => {
+        data.forEach(([merchant_id, pos]) => {
+            const {
+                lat,
+                lng
+            } = pos
+            if (locationMap.has(merchant_id)) {
+                locationMap.set(merchant_id, {
+                    lat,
+                    lng
+                })
+                const tmp = locationMap.size
+            }
+        })
+    })
 
-	socket.on('requestLocations', () => {
-		socket.emit('locationsUpdate', Array.from(locationMap))
-	})
+    socket.on('requestLocations', () => {
+        socket.emit('locationsUpdate', Array.from(locationMap))
+    })
 
-	socket.on('disconnect', merchant_id => {
-		io.emit('trackerDisconnected', merchant_id)
-		locationMap.delete(merchant_id)
-	})
+    socket.on('disconnect', merchant_id => {
+        io.emit('trackerDisconnected', merchant_id)
+        locationMap.delete(merchant_id)
+    })
 })
 
 server.listen(port, err => {
