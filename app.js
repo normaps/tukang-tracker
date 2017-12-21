@@ -119,8 +119,9 @@ app.post('/register', urlencodedParser, function(req, res) {
 
 app.post('/login',urlencodedParser, function(req, res) {
   var phone = req.body.phone;
+  var password = req.body.password;
   pool.connect(function(err,client,done){
-    client.query('select * from merchants where phone=\''+ phone + '\';',function(err,result){
+    client.query('select * from merchants where phone=\''+ phone + '\' AND password=\'' + password + '\';',function(err,result){
       done();
       if(result) {
       	var merchant_id = result.rows[0].id;
