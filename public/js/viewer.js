@@ -155,13 +155,13 @@ function getLocation(origin, destination) {
       }
 
 function searchTukang(keyword) {
-	let arr = [
-	    { id: ,name:"string 1", phone:"this", merchant_name: "that" },
-	    { id: ,name:"string 2", phone:"this", merchant_name: "that" }
-	];
+	// let arr = [
+	//     { id: ,name:"string 1", phone:"this", merchant_name: "that" },
+	//     { id: ,name:"string 2", phone:"this", merchant_name: "that" }
+	// ];
 
-	let obj = arr.find(o => o.merchant_name === keyword);
-	console.log(obj);
+	// let obj = arr.find(o => o.merchant_name === keyword);
+	// console.log(obj);
 }
 
 function pickCategory(categoryInput) {
