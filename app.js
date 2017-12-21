@@ -62,9 +62,13 @@ var port = process.env.PORT || 8080
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.get('/logout', function(req, res) {
-    req.session.destroy(function() {
-        res.redirect('/');
-    });
+  var merchant_id = res.locals.merchant;
+  console.log(merchant_id);
+  // console.log(req.session.user);
+  io.on('connection', socket => {
+    socket.emit('disconnect', merchant_id)
+  })
+  res.redirect('/');
 });
 app.use(
     session({
@@ -124,13 +128,15 @@ app.post('/login',urlencodedParser, function(req, res) {
     client.query('select * from merchants where phone=\''+ phone + '\' AND password=\'' + password + '\';',function(err,result){
       done();
       if(result) {
+        req.session.user = result;
       	var merchant_id = result.rows[0].id;
       	locationMap.set(merchant_id, {lat: null, lng: null})
       	io.on('connection', socket => {
       		socket.emit('myID', merchant_id)
       	})
+        res.locals.merchant = merchant_id;
         res.redirect('tracker.html');
-        console.log(result.rows[0]);
+        console.log(res.locals.merchant);
       }
       else {
 
