@@ -165,7 +165,9 @@ app.get('/merchant/:id', urlencodedParser, function(req, res) {
     	});
   	});
 });
-
+app.get('/view', function(req, res) {
+    res.redirect('viewer.html');
+});
 io.on('connection', socket => {
 
 	socket.on('updateLocation', data => {

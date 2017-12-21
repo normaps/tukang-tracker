@@ -12,13 +12,11 @@ document.addEventListener('DOMContentLoaded', () => {
 	})
 
 	socket.on('locationsUpdate', locations => {
-		console.log(locations)
 		locations.forEach(([id, position]) => {
 			if (position.lat && position.lng) {
 				if (markers.has(id)) {
 					const marker = markers.get(id)
 					marker.setLocation(position)
-					addWindowMarker(marker, id)
 				} else {
 					const marker = new google.maps.Marker({
 						position,
@@ -39,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 function addWindowMarker(marker, id) {
+	console.log('ini id masuk window ' + id)
 	var request = new XMLHttpRequest();
 	request.open('GET', '/merchant/' + id, true);
 
@@ -48,8 +47,11 @@ function addWindowMarker(marker, id) {
 	    var data = JSON.parse(request.responseText);
 	    var elements = '';
 	    data.forEach(function (merchant) {
-	    	elements += '<p>' + merchant.name + '</p>\n<p>' + merchant.phone + '</p>';
+	    	elements += '<p class="text-red" style="font-size:14px">' + merchant.merchant_name + '<br><span class="text-blue" style="font-size:12px">' + merchant.start_time + ' - '+ merchant.end_time +
+	    	'<br><i class="fa fa-user text-blue" aria-hidden="true" style="margin-left:3px">'+ merchant.name +'</i>' + 
+	    	'<br><i class="fa fa-phone text-blue" aria-hidden="true" style="margin-left:3px">'+ merchant.phone +'</i></p>';
 	    })
+	    
 	    var infowindow = new google.maps.InfoWindow({
 	      content: elements
 	    })
