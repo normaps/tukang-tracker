@@ -27,20 +27,20 @@ const config = {
     ssl: true
 };
 const pool = new Pool(config);
-// pool.connect(function(err,client,done){
-//   client.query('insert into merchants (id,name,phone,category_id,merchant_name,start_time,end_time,description,image) values(2,\'Abang\',\'12345678\',1,\'Nasi Goreng\',\'08:00\',\'17:00\',\'Enak Nasi Goreng\',\'www.selerasa.com/images/nasi/nasi_goreng/Resep-Dan-Cara-Membuat-Nasi-Goreng-Rumahan-Spesial-Enak-Gurih-Simpel-Dan-Praktis.jpg\');',function(err,result){
-//     done();
-//     if(err) return console.error(err);
-//     console.log(result.rows);
-//   });
+// pool.connect(function(err, client, done) {
+//     client.query('insert into merchants (id,name,phone,category_id,merchant_name,start_time,end_time,description,image) values(3,\'Abang\',\'123456789\',1,\'Nasi Goreng\',\'08:00\',\'17:00\',\'Enak Nasi Goreng\',\'www.selerasa.com/images/nasi/nasi_goreng/Resep-Dan-Cara-Membuat-Nasi-Goreng-Rumahan-Spesial-Enak-Gurih-Simpel-Dan-Praktis.jpg\');', function(err, result) {
+//         done();
+//         if (err) return console.error(err);
+//         console.log(result.rows);
+//     });
 // });
-pool.connect(function(err, client, done) {
-    client.query('select * from merchants;', function(err, result) {
-        done();
-        if (err) return console.error(err);
-        console.log(result.rows);
-    });
-});
+// pool.connect(function(err, client, done) {
+//     client.query('select * from merchants;', function(err, result) {
+//         done();
+//         if (err) return console.error(err);
+//         console.log(result.rows);
+//     });
+// });
 //console.log(process.env.db);
 
 // client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
@@ -76,25 +76,42 @@ app.use(
         saveUninitialized: false
     })
 );
-var id = 2;
+var id = 4;
 app.post('/register', urlencodedParser, function(req, res) {
     var phone = req.body.phone;
     var name = req.body.name;
-    var category = req.body.category_id;
+    var category = req.body.category;
     var merchant_name = req.body.merchant_name;
     var start_time = req.body.start_time;
     var end_time = req.body.end_time;
     var description = req.body.description;
+    var photo = null;
+    console.log(phone);
+    console.log(name);
+    console.log(category);
+    console.log(merchant_name);
+    console.log(start_time);
+    console.log(end_time);
+    console.log(description);
+
     id += 1;
+    // pool.connect(function(err, client, done) {
+    //     client.query('insert into merchants (name,phone,category_id,merchant_name,start_time,end_time,description,image) values(name,phone,category,merchant_name,start_time,end_time,description,photo);', function(err, result) {
+    //         done();
+    //         if (err) return console.error(err);
+    //         console.log(result.rows);
+    //     });
+    // });
     pool.connect(function(err, client, done) {
-        client.query('insert into merchants values(' + id + ',\'' + name + '\',\'' + phone + '\',' + category + ',\'' + merchant_name + '\',\'' + start_time + '\',\'' + end_time + '\',\'' + description + '\');', function(err, result) {
+        client.query('insert into merchants (id,name,phone,category_id,merchant_name,start_time,end_time,description,image) values(' + id + ',\'' + name + '\',\'' + phone + '\',' + category + ',\'' + merchant_name + '\',\'' + start_time + '\',\'' + end_time + '\',\'' + description + '\',\'' + photo + '\');', function(err, result) {
             done();
             if (result) {
-                console.log('hahahaa', result, res);
-                res.redirect('register-success.html');
+                console.log('cihuuyyyy');
+                res.redirect('/register-success.html');
                 // console.log(result.rows[0]);
             } else {
-
+                console.log('whyyy');
+                console.error(err);
             }
         });
     });
