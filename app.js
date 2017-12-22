@@ -27,30 +27,6 @@ const config = {
     ssl: true
 };
 const pool = new Pool(config);
-// pool.connect(function(err, client, done) {
-//     client.query('insert into merchants (id,name,phone,category_id,merchant_name,start_time,end_time,description,image) values(3,\'Abang\',\'123456789\',1,\'Nasi Goreng\',\'08:00\',\'17:00\',\'Enak Nasi Goreng\',\'www.selerasa.com/images/nasi/nasi_goreng/Resep-Dan-Cara-Membuat-Nasi-Goreng-Rumahan-Spesial-Enak-Gurih-Simpel-Dan-Praktis.jpg\');', function(err, result) {
-//         done();
-//         if (err) return console.error(err);
-//         console.log(result.rows);
-//     });
-// });
-// pool.connect(function(err, client, done) {
-//     client.query('select * from merchants;', function(err, result) {
-//         done();
-//         if (err) return console.error(err);
-//         console.log(result.rows);
-//     });
-// });
-//console.log(process.env.db);
-
-// client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
-//   if (err) throw err;
-//   for (let row of res.rows) {
-//     console.log(JSON.stringify(row));
-//   }
-//   client.end();
-// });
-
 const app = express()
 const server = http.createServer(app)
 const io = socketIo(server)
@@ -129,24 +105,6 @@ app.post('/login',urlencodedParser, function(req, res) {
         });
     });
 });
-// console.log("hi");
-// res.send(req.body.phone);
-// io.on('connection', socket => {
-// 	locationMap.set(merchant_id, {lat: null, lng: null})
-// 	socket.on('updateLocation', pos => {
-// 		if (locationMap.has(merchant_id)) {
-// 			locationMap.set(merchant_id, pos)
-// 			console.log(merchant_id, pos)
-//       arr.push(pos)
-//       console.log(arr);
-// 		}
-// 	})
-//
-// 	socket.on('disconnect', () => {
-// 		locationMap.delete(merchant_id)
-// 	})
-// })
-//res.redirect('tracker.html')
 app.get('/merchant_categories', urlencodedParser, function(req, res) {
     pool.connect(function(err, client, done) {
         client.query('select * from merchant_categories;', function(err, result) {

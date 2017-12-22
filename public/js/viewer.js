@@ -108,71 +108,14 @@ function getLocation(origin, destination) {
 	  // There was a connection error of some sort
 	};
 	request.send();
-    //     var bounds = new google.maps.LatLngBounds;
-    //     var markersArray = [];
-    //     var locOrigin = new google.maps.LatLng(origin.latitude, origin.longitude);
-    //     var nameOrigin = 'Origin';
-    //     var nameDestination = 'Destination';
-    //     var locDestination = new google.maps.LatLng(destination.latitude, destination.longitude);
-    //     var destinationIcon = 'https://chart.googleapis.com/chart?' +
-    //         'chst=d_map_pin_letter&chld=D|FF0000|000000';
-    //     var originIcon = 'https://chart.googleapis.com/chart?' +
-    //         'chst=d_map_pin_letter&chld=O|FFFF00|000000';
-    //     var geocoder = new google.maps.Geocoder;
-
-    //     var service = new google.maps.DistanceMatrixService;
-    //     service.getDistanceMatrix({
-    //       origins: [locOrigin, nameOrigin],
-    //       destinations: [nameDestination, locDestination],
-    //       travelMode: 'DRIVING',
-    //       unitSystem: google.maps.UnitSystem.METRIC,
-    //       avoidHighways: false,
-    //       avoidTolls: false
-    //     }, function(response, status) {
-    //       if (status == 'OK') {
-		  //   var origins = response.originAddresses;
-		  //   var destinations = response.destinationAddresses;
-		  //   for (var i = 0; i < origins.length; i++) {
-		  //     var results = response.rows[i].elements;
-		  //     for (var j = 0; j < results.length; j++) {
-		  //       var element = results[j];
-		  //       		    console.log(element)
-		  //       var distance = element.distance.text;
-		  //       var duration = element.duration.text;
-		  //       var from = origins[i];
-		  //       var to = destinations[j];
-		  //     }
-		  //   }
-		  // }
-    //     });
-      }
-
-      function deleteMarkers(markersArray) {
-        for (var i = 0; i < markersArray.length; i++) {
-          markersArray[i].setMap(null);
-        }
-        markersArray = [];
-      }
-
-function searchTukang(keyword) {
-	// let arr = [
-	//     { id: ,name:"string 1", phone:"this", merchant_name: "that" },
-	//     { id: ,name:"string 2", phone:"this", merchant_name: "that" }
-	// ];
-
-	// let obj = arr.find(o => o.merchant_name === keyword);
-	// console.log(obj);
 }
 
-// function pickCategory(categoryInput) {
-// 	let arr = [
-// 	    { id: ,name:"string 1", phone:"this", merchant_name: "that", category: "makanan" },
-// 	    { id: ,name:"string 2", phone:"this", merchant_name: "that", category: "minuman" }
-// 	];
-
-// 	let obj = arr.find(o => o.category === categoryInput);
-// 	console.log(obj);
-// }
+function deleteMarkers(markersArray) {
+	for (var i = 0; i < markersArray.length; i++) {
+	  markersArray[i].setMap(null);
+	}
+	markersArray = [];
+}
 
 function getMerchantCategories() {
 	var request = new XMLHttpRequest();
